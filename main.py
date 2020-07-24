@@ -1,4 +1,10 @@
 import socket
+from machine import Pin
+from machine import I2C
+import bme280
+
+# назначаем пины для датчика
+i2c = I2C(scl = Pin(22), sda = Pin(21), freq = 10000)
 
 # определяем серверный сокет
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -27,5 +33,11 @@ while True:
             break
         else:
             # если есть запрос, отправляем ответ
-            response = "Hello!".encode()
+            #опрос датчика
+            bme = bme280.BME280(i2c = i2c)
+            temp = bme.temperature
+            humi = bme.humidity
+            pres = bme.pressure
+
+            response = ("Temperature: " + temp + "\n" + "Humidity: " + humi + "\n" + "Pressure: " + pres).encode()
             client_socket.send(response)
