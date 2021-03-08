@@ -11,14 +11,14 @@ server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # делаем привязку к адресу и порту (ip выставлен статическим на роутере)
 server_socket.bind(('192.168.1.101', 9000))
-server_socket.settimeout(10)
 
 # запускаем ожидание подключений
-server_socket.listen(20)
+server_socket.listen(1)
 
 while True:
     # принимаем подключение
     client_socket, addr = server_socket.accept()
+    client_socket.settimeout(10.0)
 
     while True:
         request = client_socket.recv(4096)
@@ -36,3 +36,4 @@ while True:
                temp = ds_sensor.read_temp(rom)
             response = str(temp).encode()
             client_socket.send(response)
+

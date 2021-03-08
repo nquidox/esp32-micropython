@@ -7,9 +7,13 @@ port = 9000
 sock = socket.socket()
 sock.connect((host, port))
 
+print(f"Connecting to {host}:{port}")
+counter = 0
+
 while True:
-    sock.send(bytes(1))
-    data = sock.recv(4096)
-    param_list = data.decode()
-    print(param_list)
-    time.sleep(1)
+	counter += 1
+	sock.send(bytes(1))
+	data = sock.recv(4096)
+	param_list = data.decode()
+	print(f"#{counter}", "[" + str(time.ctime()) + "]", param_list)
+	time.sleep(1)
